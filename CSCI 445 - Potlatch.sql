@@ -21,7 +21,8 @@ CREATE TABLE `Item` (
   `id` int PRIMARY KEY AUTO_INCREMENT,
   `potlatch_id` int NOT NULL,
   `title` varchar(100) NOT NULL,
-  `description` varchar(1000) NOT NULL
+  `description` varchar(1000) NOT NULL,
+  `expiration' datetime NOT NULL
 );
 
 CREATE TABLE `Bid` (

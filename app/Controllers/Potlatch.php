@@ -133,7 +133,8 @@ class Potlatch extends BaseController
                     $data = [
                         'potlatch_id' => $potlatch_id,
                         'title' => $this->request->getVar('title', FILTER_SANITIZE_STRING),
-                        'description' => $this->request->getVar('description', FILTER_SANITIZE_STRING)
+                        'description' => $this->request->getVar('description', FILTER_SANITIZE_STRING),
+                        'expiration' => $this->request->getVar('expiration', FILTER_SANITIZE_STRING)
                     ];
                     // Insert item.
                     if($item_id = $potlatchItemModel->insert($data)){

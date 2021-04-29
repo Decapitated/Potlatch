@@ -69,6 +69,8 @@
             <input type="text" id="title" name="title" value="" size="50" />
             <label for="description">Description</label>
             <textarea id="description" name="description" value="" rows="9" maxlength="1000"></textarea>
+            <label for="expiration">Expiration Date</label>
+            <input type="datetime-local" id="expiration" name="expiration" value="2021-04-28T00:00" min = "date()">
             <input type="file" enctype="multipart/form-data" name="images[]" multiple/>
             <button type="submit">Create</button>
             <input name="potlatch_id" type="number" value="<?= $potlatch['id'] ?>" hidden/>
@@ -110,3 +112,4 @@
         }
     }
 </script>
+

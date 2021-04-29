@@ -12,13 +12,15 @@ class Auction extends BaseController
             helper(['form', 'url', 'html', 'user']);
             $potlatchItemModel = new \App\Models\PotlatchItem();
             $potlatchItem = $potlatchItemModel->where('id', $id)->get()->getRow();
+            
             // If item exists, and user has access.
             if($potlatchItem && hasAccess($this->session->user->id, $potlatchItem->potlatch_id)){
                 $data['title'] = 'Auction';
                 $data['user'] = $this->session->user;
                 echo view('components/header', $data);
                 unset($data);
-
+                //current date var
+                $date = date('Y-m-d H:i:s');
                 $itemBidModel = new \App\Models\ItemBid();
                 $highestBid = $itemBidModel->where('item_id', $id)->selectMax('amount')->get()->getRow();
                 $highestBid = $itemBidModel->where(['item_id' => $id, 'amount' => $highestBid->amount])->get()->getRow();
@@ -26,7 +28,8 @@ class Auction extends BaseController
                 $data['highestBid'] = (array)$highestBid;
                 $data['isOwner'] = isOwner($this->session->user->id, $potlatchItem->potlatch_id);
                 $data['isHighestBidder'] = $highestBid->user_id == $this->session->user->id;
-                $data['canBid'] = (!$data['isOwner'] && !$data['isHighestBidder'] && $highestBid->amount+1 <= getAvailableCoins($this->session->user->id, $potlatchItem->potlatch_id));
+                $data['canBid'] = (!$data['isOwner'] && !$data['isHighestBidder'] && $highestBid->amount+1 <= getAvailableCoins($this->session->user->id, $potlatchItem->potlatch_id) 
+                && $date <= $potlatchItem->expiration);
                 // Get list of all images in item folder.
                 try{
                     $files = scandir('images/'.$potlatchItem->potlatch_id.'/'.$potlatchItem->id);
@@ -56,6 +59,8 @@ class Auction extends BaseController
             // Get potlatch item info.
             $potlatchItemModel = new \App\Models\PotlatchItem();
             $potlatchItem = $potlatchItemModel->where('id', $item_id)->get()->getRow();
+            //current date
+            $date = date('Y-m-d H:i:s');
             // If item exists, and user has access, and is not the owner.
             if($potlatchItem &&
                     hasAccess($this->session->user->id, $potlatchItem->potlatch_id) &&
@@ -67,7 +72,7 @@ class Auction extends BaseController
                 // Get the amount of available coins to spend.
                 $aCoins = getAvailableCoins($this->session->user->id, $potlatchItem->potlatch_id);
                 // If there's not bids or If there's inputted bid is higher the highest bid.
-                if(($hBidInput == false && is_null($hBid)) || ($bidInput != false && !is_null($hBid) && $hBid->user_id != $this->session->user->id && $bidInput >= $hBid->amount)){
+                if(($hBidInput == false && is_null($hBid)) || ($bidInput != false && !is_null($hBid) && $hBid->user_id != $this->session->user->id && $bidInput >= $hBid->amount && $date <= $potlatchItem->expiration)){
                     // If user has enough coins, and isn't last bidder.
                     if(isset($aCoins)){
                         // No one has bid and user has one coin.

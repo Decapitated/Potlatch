@@ -37,6 +37,7 @@
                 <?php endif; ?>
             </button>
         <?php endif; ?>
+        <h2 style="font-size: 15px">Expiration Date: <?= $item['expiration'] ?> </h2>
         <input name="item_id" type="number" value="<?= $item['id'] ?>" hidden/>
         <input name="highestBid" type="number" value="<?= $highestBid['amount']?>" hidden/>
     </form>
