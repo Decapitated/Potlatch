@@ -31,7 +31,7 @@ CREATE TABLE `Bid` (
   `timestamp` datetime NOT NULL
 );
 
-CREATE TABLE `Comment` (
+CREATE TABLE `comment` (
   `id` int NOT NULL,
   `reply_id` int NOT NULL,
   `item_id` int NOT NULL,

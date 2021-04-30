@@ -38,7 +38,9 @@
             </button>
         <?php endif; ?>
         <input name="item_id" type="number" value="<?= $item['id'] ?>" hidden/>
-        <input name="highestBid" type="number" value="<?= $highestBid['amount']?>" hidden/>
+        <?php if(isset($highestBid['amount'])): ?>
+            <input name="highestBid" type="number" value="<?= $highestBid['amount']?>" hidden/>
+        <?php endif; ?>
     </form>
 </section>
 <script
@@ -53,4 +55,26 @@
     $('carousel #right').click(function(){
         $('carousel images > img:first-child').appendTo('carousel images');
     });
+</script>
+
+<div>
+    <?= form_open('comment/comment') ?>
+        <textarea name="comment"></textarea>
+        <input name="item_id" type="number" value="<?= $item['id'] ?>" hidden/>
+        <button type="submit">Post</button>
+    </form>
+    <div id="insert_comments" class="container" >
+    </div>
+</div>
+<script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+<script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+<?= script_tag(['src' => 'js/Comments.js', 'type' => 'text/babel']) ?>
+<script type="text/babel">
+    const comments = <?= json_encode($comments) ?>
+
+    console.log(comments);
+    ReactDOM.render(
+        <CommentDisplay comments={comments} item_id={<?= $item['id'] ?>}/>,
+        document.getElementById('insert_comments'));
 </script>
