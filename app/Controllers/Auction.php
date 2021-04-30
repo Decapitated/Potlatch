@@ -52,6 +52,8 @@ class Auction extends BaseController
                 $comments = $db->query('SELECT c.id, c.comment, c.timestamp, u.first_name, u.last_name
                                     FROM comment c LEFT JOIN user u ON u.id = c.user_id WHERE c.user_id = ? AND c.reply_id IS NULL', [$this->session->user->id])->getResultArray();
                 $data['comments'] = $comments;
+                $data['csrf_field'] = csrf_field();
+                $data['csrf_hash'] = csrf_hash();
                 echo view('potlatch/auction', $data);
 
                 echo view('components/footer');

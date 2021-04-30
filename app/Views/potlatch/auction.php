@@ -58,7 +58,7 @@
 </script>
 
 <div>
-    <?= form_open('comment/comment') ?>
+    <?= form_open('/comment/comment') ?>
         <textarea name="comment"></textarea>
         <input name="item_id" type="number" value="<?= $item['id'] ?>" hidden/>
         <button type="submit">Post</button>
@@ -71,10 +71,12 @@
 <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
 <?= script_tag(['src' => 'js/Comments.js', 'type' => 'text/babel']) ?>
 <script type="text/babel">
-    const comments = <?= json_encode($comments) ?>
+    const comments = <?= json_encode($comments) ?>;
+    const csrf_field = <?= $csrf_field ?>;
+    const csrf_hash = '<?= $csrf_hash ?>';
 
     console.log(comments);
     ReactDOM.render(
-        <CommentDisplay comments={comments} item_id={<?= $item['id'] ?>}/>,
+        <CommentDisplay comments={comments} item_id={<?= $item['id'] ?>} csrf_field={csrf_field} csrf_hash={csrf_hash}/>,
         document.getElementById('insert_comments'));
 </script>
