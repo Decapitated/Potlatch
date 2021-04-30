@@ -35,8 +35,8 @@ class Auction extends BaseController
                 $data['isOwner'] = isOwner($this->session->user->id, $potlatchItem->potlatch_id); // Check if isOwner of potlatch.
                 $data['isHighestBidder'] = ($highestBid)? $highestBid->user_id == $this->session->user->id : false;      // Check if highest bidder.
                 $data['canBid'] = (!$data['isOwner'] &&                                           // Check whether can bid.
-                                   !$data['isHighestBidder'] &&
-                                   $highestBid->amount+1 <= getAvailableCoins($this->session->user->id, $potlatchItem->potlatch_id));
+                                   !$data['isHighestBidder'] && (($highestBid &&
+                                   $highestBid->amount+1 <= getAvailableCoins($this->session->user->id, $potlatchItem->potlatch_id)) || getAvailableCoins($this->session->user->id, $potlatchItem->potlatch_id) >= 1));
                 // Get list of all images in item folder.
                 try{
                     // Get all files/directories in folder images/potlatch_id/item_id
