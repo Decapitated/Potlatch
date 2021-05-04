@@ -312,3 +312,9 @@ input {
 .comment_box .replies {
     padding-left: 2rem;
 }
+
+.owner-item {
+    padding: 2rem;
+    background-color: #ffecb5;
+    border-color: #ffecb5;
+}

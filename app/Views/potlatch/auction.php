@@ -1,3 +1,9 @@
+<?php if($isOwner && isset($highestBidder['id'])): ?>
+    <div class="owner-item">
+        <h1>Highest Bidder: <?= $highestBidder['first_name'].' '.$highestBidder['last_name'] ?></h1>
+        <h2>Email: <?= $highestBidder['email'] ?></h2>
+    </div>
+<?php endif; ?>
 <section>
     <carousel>
         <?php if(isset($images) && count($images) > 1): ?>

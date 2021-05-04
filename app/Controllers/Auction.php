@@ -29,9 +29,15 @@ class Auction extends BaseController
                 // So we use the item_id and the amount to get the proper row with all the information.
                 $highestBid = $itemBidModel->where(['item_id' => $id, 'amount' => $highestBid->amount])->get()->getRow();
 
+                $userModel = new \App\Models\User();
+                $highestBidder = $userModel->where('id', $highestBid->user_id)->get()->getRow();
+                unset($highestBidder->password); // Unset password for safety sake.
+
+
                 // Setting data to be passed to the view.
                 $data['item'] = (array)$potlatchItem;
                 $data['highestBid'] = (array)$highestBid;
+                $data['highestBidder'] = (array)$highestBidder;
                 $data['isOwner'] = isOwner($this->session->user->id, $potlatchItem->potlatch_id); // Check if isOwner of potlatch.
                 $data['isHighestBidder'] = ($highestBid)? $highestBid->user_id == $this->session->user->id : false;      // Check if highest bidder.
                 $data['canBid'] = (!$data['isOwner'] &&                                           // Check whether can bid.
